@@ -1,0 +1,2 @@
+# Set all bash scripts to have the right line endings
+*.sh text eol=lf 

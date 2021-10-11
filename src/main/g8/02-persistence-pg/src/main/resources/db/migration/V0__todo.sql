@@ -1,0 +1,11 @@
+BEGIN;
+
+DROP TABLE IF EXISTS todo CASCADE;
+CREATE TABLE todo (
+    task TEXT NOT NULL,
+    done BOOLEAN NOT NULL,
+    id SERIAL PRIMARY KEY
+);
+GRANT INSERT, SELECT, UPDATE ON TABLE todo TO $name;format="camel"$_worker;
+
+COMMIT;
