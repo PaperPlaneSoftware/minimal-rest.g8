@@ -34,18 +34,18 @@ object Server {
   val logger = LoggerFactory.getLogger(getClass())
 
   // get database configuration
-  val dbHost        = sys.env.getOrElse("POSTGRES_HOST", "localhost")
-  val dbPort        = sys.env.getOrElse("POSTGRES_PORT", "5432").toInt
-  val dbName        = sys.env.getOrElse("POSTGRES_DB", "osi")
-  val dbMaxConns    = sys.env.getOrElse("POSTGRES_MAX_CONN", "10").toInt
-  val dbDebug       = sys.env.getOrElse("POSTGRES_DEBUG", "true").toBoolean
-  val dbAutoMigrate = sys.env.getOrElse("POSTGRES_AUTO_MIGRATE", "false").toBoolean
-  val dbWorker      = sys.env.getOrElse("POSTGRES_WORKER", "$name$_worker")
-  val dbWorkerPass  = sys.env.get("POSTGRES_WORKER_PASSWORD")
+  val dbHost        = sys.env.get("POSTGRES_HOST").get
+  val dbPort        = sys.env.get("POSTGRES_PORT").get.toInt
+  val dbName        = sys.env.get("POSTGRES_DB").get
+  val dbMaxConns    = sys.env.get("POSTGRES_MAX_CONN").get.toInt
+  val dbDebug       = sys.env.get("POSTGRES_DEBUG").get.toBoolean
+  val dbAutoMigrate = sys.env.get("POSTGRES_AUTO_MIGRATE").get.toBoolean
+  val dbWorker      = sys.env.get("POSTGRES_WORKER").get
+  val dbWorkerPass  = sys.env.get("POSTGRES_WORKER_PASSWORD").get
 
   def migrate[F[_]](retry: Int = 0)(using Async[F]): F[Unit] = {
-    val dbOwner     = sys.env.getOrElse("POSTGRES_USER", "$name$_owner")
-    val dbOwnerPass = sys.env.get("POSTGRES_PASSWORD")
+    val dbOwner     = sys.env.get("POSTGRES_USER").get
+    val dbOwnerPass = sys.env.get("POSTGRES_PASSWORD").get
 
     try
       val dataSource = new DriverDataSource(
@@ -53,7 +53,7 @@ object Server {
         null,
         s"jdbc:postgresql://\${dbHost}:\${dbPort}/\${dbName}",
         dbOwner,
-        dbOwnerPass.getOrElse("")
+        dbOwnerPass
       )
 
       Flyway
