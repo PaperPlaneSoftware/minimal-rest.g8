@@ -28,7 +28,7 @@ lazy val root = project
   .in(file("."))
   .enablePlugins(FlywayPlugin)
   .settings(
-    flywayUrl      := s"jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}",
+    flywayUrl      := s"jdbc:postgresql://\${POSTGRES_HOST}:\${POSTGRES_PORT}/\${POSTGRES_DB}",
     flywayUser     := POSTGRES_USER,
     flywayPassword := POSTGRES_PASSWORD,
     flywayLocations += "db/migrations/default"
