@@ -16,11 +16,11 @@ object TodoRepo:
   protected[persistence] object Sql:
     val cols       = sql"task, done, author"
     val selectAll  = sql"SELECT * FROM todo"
-    val selectUser = sql"SELECT * from todo WHERE author = $int4"
-    val selectOne  = sql"SELECT ${cols}, id FROM todo WHERE id = $int4"
-    val insertOne  = sql"INSERT INTO todo (${cols}) VALUES ($text, $bool, $int4) RETURNING id"
-    val deleteOne  = sql"DELETE FROM todo WHERE id = $int4"
-    val updateOne  = sql"UPDATE todo SET task = $text, done = $bool WHERE id = $int4"
+    val selectUser = sql"SELECT * from todo WHERE author = \$int4"
+    val selectOne  = sql"SELECT \${cols}, id FROM todo WHERE id = \$int4"
+    val insertOne  = sql"INSERT INTO todo (\${cols}) VALUES (\$text, \$bool, \$int4) RETURNING id"
+    val deleteOne  = sql"DELETE FROM todo WHERE id = \$int4"
+    val updateOne  = sql"UPDATE todo SET task = \$text, done = \$bool WHERE id = \$int4"
 
   import Codecs.*
   import TodoRepo.Sql.*

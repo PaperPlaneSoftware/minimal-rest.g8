@@ -18,10 +18,10 @@ object UserRepo:
 
   protected[persistence] object Sql:
     val cols              = sql"username, id"
-    val colsWithPasswd    = sql"$cols, passwd"
-    val userIdFromSession = sql"SELECT user_id FROM user_session WHERE session_id = $uuid"
+    val colsWithPasswd    = sql"\$cols, passwd"
+    val userIdFromSession = sql"SELECT user_id FROM user_session WHERE session_id = \$uuid"
     val idFromDeets       =
-      sql"SELECT id FROM $name$_user WHERE username = $text AND passwd = crypt($text, passwd)"
+      sql"SELECT id FROM $name$_user WHERE username = \$text AND passwd = crypt(\$text, passwd)"
 
   import Codecs.*
   import Sql.*

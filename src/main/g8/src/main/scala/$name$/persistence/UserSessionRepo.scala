@@ -17,9 +17,9 @@ object SessionRepo:
 
   object Sql:
     val cols      = sql"user_id, created_at, expires_at, session_id"
-    val selectOne = sql"SELECT $cols FROM user_session WHERE session_id = $uuid"
-    val insertOne = sql"INSERT INTO user_session VALUES ($int4, $timestamp, $timestamp, $uuid)"
-    val asUser    = sql"SET auth.id = $text"
+    val selectOne = sql"SELECT \$cols FROM user_session WHERE session_id = \$uuid"
+    val insertOne = sql"INSERT INTO user_session VALUES (\$int4, \$timestamp, \$timestamp, \$uuid)"
+    val asUser    = sql"SET auth.id = \$text"
 
   import Codecs.*
   import Sql.*

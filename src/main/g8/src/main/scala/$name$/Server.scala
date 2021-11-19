@@ -88,7 +88,7 @@ object Server:
       val dataSource = new DriverDataSource(
         getClass().getClassLoader(),
         null,
-        s"jdbc:postgresql://${dbHost}:${dbPort}/${dbName}",
+        s"jdbc:postgresql://\${dbHost}:\${dbPort}/\${dbName}",
         dbOwner,
         dbOwnerPass
       )
@@ -111,7 +111,7 @@ object Server:
         migrate(retry + 1)
 
       case ex =>
-        logger.error(s"Migration failed.\n${ex.getMessage()}")
+        logger.error(s"Migration failed.\n\${ex.getMessage()}")
         IO.raiseError(ex)
   end migrate
 
