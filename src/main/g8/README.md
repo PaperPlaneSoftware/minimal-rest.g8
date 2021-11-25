@@ -89,7 +89,7 @@ TODO: fill this in!
 ### Docker (recommended)
 
 1. (optional) Build the latest version of the database.
-    WINDOWS: MAKE SURE ./02-persistence-pg/src/main/resources/db/init-db.sh IS LF AND NOT CRLF!
+    WINDOWS: MAKE SURE ./src/main/resources/db/init-db.sh IS LF AND NOT CRLF!
 
     `docker build -f Dockerfile.db -t <image>:<tag> .`
 
