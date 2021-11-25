@@ -18,9 +18,9 @@ import org.http4s.server.{AuthMiddleware, Router}
 import org.http4s.server.middleware.{CORS, Logger}
 import org.http4s.server.staticcontent.{fileService, FileService}
 import org.slf4j.LoggerFactory
-import osi.domain.UserSession
-import osi.persistence.{SessionPool, SessionRepo, TodoRepo}
-import osi.routes.{authRoutes, todoRoutes}
+import $name$.domain.UserSession
+import $name$.persistence.{SessionPool, SessionRepo, TodoRepo}
+import $name$.routes.{authRoutes, todoRoutes}
 import scala.util.{Failure, Success, Try}
 import skunk.Session
 
