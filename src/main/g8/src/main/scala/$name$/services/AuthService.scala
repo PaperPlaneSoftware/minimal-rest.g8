@@ -18,7 +18,7 @@ object AuthService:
     withinTransaction { implicit s => xa =>
       for
         idOpt     <- UserRepo.login(uname, pwd)
-        sessionId <- idOpt.map(SessionRepo.newSession(_, now, now plusDays 1)).sequence
+        sessionId <- idOpt.map(SessionRepo.newSession(_, now, now `plusDays` 1)).sequence
       yield sessionId match
         case None            => AuthErr.IncorrectLoginDetails.asLeft
         case Some(sessionId) => sessionId.asRight

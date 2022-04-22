@@ -25,7 +25,7 @@ import scala.util.{Failure, Success, Try}
 import skunk.Session
 
 // ---- Authorization helper functions ----
-private def hasExpired(session: UserSession) = session.expiresAt isBefore LocalDateTime.now
+private def hasExpired(session: UserSession) = session.expiresAt `isBefore` LocalDateTime.now
 
 private def getHeader(header: Option[Authorization]) =
   EitherT {
