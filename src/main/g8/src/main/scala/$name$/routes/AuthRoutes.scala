@@ -9,7 +9,8 @@ import org.http4s.circe.CirceEntityDecoder.*
 import org.http4s.circe.CirceEntityEncoder.*
 import org.http4s.dsl.Http4sDsl
 import skunk.Session
-import $name$.services.AuthService
+
+import services.AuthService
 
 final case class Deets(username: String, password: String)
 

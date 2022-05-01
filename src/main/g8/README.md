@@ -1,5 +1,9 @@
 # Getting Started
 
+## Install Sqitch
+
+https://sqitch.org/download/
+
 ## Get the code
 
 Prerequisites: Git, SBT, Scala, Docker

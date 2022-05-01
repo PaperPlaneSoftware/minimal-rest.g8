@@ -3,12 +3,13 @@ package persistence
 
 import cats.effect.IO
 import java.util.UUID
-import $name$.domain.User
 import skunk.Session
 import skunk.codec.all.*
 import skunk.data.Completion
 import skunk.implicits.*
 import skunk.Transaction
+
+import domain.{User, UserSession}
 
 object UserRepo:
   type UserRow = User
@@ -17,11 +18,13 @@ object UserRepo:
     val userCodec = (text *: int4.opt).pimap[UserRow]
 
   protected[persistence] object Sql:
-    val cols              = sql"username, id"
-    val colsWithPasswd    = sql"\$cols, passwd"
-    val userIdFromSession = sql"SELECT user_id FROM user_session WHERE session_id = \$uuid"
-    val idFromDeets       =
-      sql"SELECT id FROM $name$_user WHERE username = \$text AND passwd = crypt(\$text, passwd)"
+    val table          = sql"tp_user"
+    val cols           = sql"username, id"
+    val colsWithPasswd = sql"$cols, passwd"
+    val userIdFromSession =
+      sql"SELECT user_id FROM ${SessionRepo.Sql.table} WHERE session_id = $uuid"
+    val idFromDeets =
+      sql"SELECT id FROM $table WHERE username = $text AND passwd = crypt($text, passwd)"
 
   import Codecs.*
   import Sql.*

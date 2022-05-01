@@ -3,9 +3,10 @@ package services
 
 import cats.implicits.*
 import cats.effect.{IO, Resource}
+import skunk.{Session, Transaction}
+
 import domain.UserSession
 import persistence.SessionRepo
-import skunk.{Session, Transaction}
 
 /** Executes the given function within a postgres transaction.
   *

@@ -1,3 +1,4 @@
-package $name$.domain
+package $name$
+package domain
 
-case class Todo(task: String, done: Boolean, author: Option[User], id: Option[Int])
+case class Todo(task: String, done: Boolean, created_by: Option[User], id: Option[Int])

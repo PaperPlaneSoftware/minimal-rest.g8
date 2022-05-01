@@ -3,7 +3,6 @@ set -e
 
 POSTGRES="psql -U $name$_owner -d $name$"
 
-
 echo "Creating database role: \$POSTGRES_WORKER"
 
 \$POSTGRES <<-EOSQL

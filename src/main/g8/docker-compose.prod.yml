@@ -1,7 +1,7 @@
 version: "3"
 services:
   app:
-    build: .
+    image: $docker_repo$/$name$_web:latest
     container_name: $name$_app
     depends_on:
       - "db"
@@ -31,6 +31,6 @@ services:
     volumes:
       - db_volume:/var/lib/postgresql/data
       - ./db:/docker-entrypoint-initdb.d
-  
+
 volumes:
   db_volume:

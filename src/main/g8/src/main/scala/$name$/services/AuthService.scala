@@ -13,7 +13,7 @@ final case class SigninDeets(username: String, password: String)
 
 object AuthService:
   def login(uname: String, pwd: String)(using
-      db: Resource[IO, Session[IO]]
+      Resource[IO, Session[IO]]
   ): IO[AuthErr Or UUID] =
     withinTransaction { implicit s => xa =>
       for

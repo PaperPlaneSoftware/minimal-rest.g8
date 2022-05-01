@@ -8,8 +8,6 @@ import com.comcast.ip4s.*
 import fs2.Stream
 import java.time.LocalDateTime
 import java.util.UUID
-import org.flywaydb.core.Flyway
-import org.flywaydb.core.internal.jdbc.DriverDataSource
 import org.http4s.{Credentials, Request}
 import org.http4s.ember.server.EmberServerBuilder
 import org.http4s.headers.Authorization
@@ -18,11 +16,12 @@ import org.http4s.server.{AuthMiddleware, Router}
 import org.http4s.server.middleware.{CORS, Logger}
 import org.http4s.server.staticcontent.{fileService, FileService}
 import org.slf4j.LoggerFactory
-import $name$.domain.UserSession
-import $name$.persistence.{SessionPool, SessionRepo, TodoRepo}
-import $name$.routes.{authRoutes, todoRoutes}
 import scala.util.{Failure, Success, Try}
 import skunk.Session
+
+import domain.UserSession
+import persistence.{SessionPool, SessionRepo, TodoRepo}
+import routes.{authRoutes, devRoutes, todoRoutes}
 
 // ---- Authorization helper functions ----
 private def hasExpired(session: UserSession) = session.expiresAt `isBefore` LocalDateTime.now
@@ -69,6 +68,7 @@ object Server:
   val logger = LoggerFactory.getLogger(getClass())
 
   // get database configuration
+  val devMode      = sys.env.get("DEV_MODE").getOrElse("false").toBoolean
   val dbHost       = sys.env.get("POSTGRES_HOST").get
   val dbPort       = sys.env.get("POSTGRES_PORT").get.toInt
   val dbName       = sys.env.get("POSTGRES_DB").get
@@ -76,44 +76,6 @@ object Server:
   val dbDebug      = sys.env.get("POSTGRES_DEBUG").get.toBoolean
   val dbWorker     = sys.env.get("POSTGRES_WORKER").get
   val dbWorkerPass = sys.env.get("POSTGRES_WORKER_PASSWORD")
-
-  val autoMigrate    = sys.env.get("AUTO_MIGRATE").get.toBoolean
-  val testMigrations = sys.env.get("TEST_MIGRATIONS").get.toBoolean
-
-  def migrate(retry: Int = 0): IO[Unit] =
-    val dbOwner     = sys.env.get("POSTGRES_USER").get
-    val dbOwnerPass = sys.env.get("POSTGRES_PASSWORD").get
-
-    try
-      val dataSource = new DriverDataSource(
-        getClass().getClassLoader(),
-        null,
-        s"jdbc:postgresql://\${dbHost}:\${dbPort}/\${dbName}",
-        dbOwner,
-        dbOwnerPass
-      )
-
-      val defaultLocation = "db/migrations/default"
-      val testLocation    = if testMigrations then "db/migrations/test" else null
-
-      Flyway
-        .configure()
-        .dataSource(dataSource)
-        .locations(defaultLocation, testLocation)
-        .load()
-        .migrate()
-
-      IO.pure(())
-    catch
-      case _ if retry < 3 =>
-        logger.info("Retrying migration...")
-        Thread.sleep(100)
-        migrate(retry + 1)
-
-      case ex =>
-        logger.error(s"Migration failed.\n\${ex.getMessage()}")
-        IO.raiseError(ex)
-  end migrate
 
   def buildServer(using natchez.Trace[IO]): IO[Unit] = SessionPool
     .make(dbHost, dbPort, dbWorker, dbName, dbWorkerPass, dbMaxConns, dbDebug)
@@ -127,11 +89,13 @@ object Server:
       val withAuth    = AuthMiddleware(authUser)
 
       // Define service
-      val router = Router(
+      val devRouter = Router("/dev" -> devRoutes)
+      val prodRouter = Router(
         "/auth" -> authRoutes,
         "/api"  -> withAuth(todoRoutes),
         "/"     -> fileService[IO](FileService.Config("./public"))
-      ).orNotFound
+      )
+      val router = (if devMode then devRouter <+> prodRouter else prodRouter).orNotFound
 
       // Construct http app
       val httpApp = (withCors compose withLogging)(router)
@@ -152,10 +116,6 @@ object Server:
     }
   end buildServer
 
-  def serve(using Monad[IO], natchez.Trace[IO]): IO[Unit] =
-    for
-      _ <- if autoMigrate then migrate() else IO.pure(())
-      _ <- buildServer
-    yield ()
+  def serve(using Monad[IO], natchez.Trace[IO]): IO[Unit] = buildServer
 
 end Server

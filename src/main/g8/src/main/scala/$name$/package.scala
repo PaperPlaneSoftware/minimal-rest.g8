@@ -3,10 +3,10 @@ package $name$
 infix type Or[A, B] = Either[A, B]
 
 enum AuthErr(val msg: String):
-  case NoHeader extends AuthErr("No Authorization header provided in request.")
-  case InvalidHeader extends AuthErr("Authorization header not valid.")
-  case SessionNotFound extends AuthErr("Session not found.")
-  case SessionExpired extends AuthErr("Session expired.")
+  case NoHeader              extends AuthErr("No Authorization header provided in request.")
+  case InvalidHeader         extends AuthErr("Authorization header not valid.")
+  case SessionNotFound       extends AuthErr("Session not found.")
+  case SessionExpired        extends AuthErr("Session expired.")
   case IncorrectLoginDetails extends AuthErr("Incorrect login details.")
 
   // TODO: By default pg row level security won't throw an exception it will just
