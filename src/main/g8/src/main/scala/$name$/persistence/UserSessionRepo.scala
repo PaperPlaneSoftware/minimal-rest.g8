@@ -17,11 +17,11 @@ object SessionRepo:
     val userSession = (int4 *: timestamp *: timestamp *: uuid).pimap[UserSession]
 
   object Sql:
-    val table              = sql"tp_user_session"
-    val cols               = sql"tp_user_id, created_at, expires_at, session_id"
-    val selectOne          = sql"SELECT $cols FROM $table WHERE session_id = $uuid"
-    val insertOne          = sql"INSERT INTO $table VALUES ($int4, $timestamp, $timestamp, $uuid)"
-    def asUser(id: String) = sql"SET auth.id = #$id"
+    val table     = sql"tp_user_session"
+    val cols      = sql"tp_user_id, created_at, expires_at, session_id"
+    val selectOne = sql"SELECT \$cols FROM \$table WHERE session_id = \$uuid"
+    val insertOne = sql"INSERT INTO \$table VALUES (\$int4, \$timestamp, \$timestamp, \$uuid)"
+    def asUser(id: String) = sql"SET auth.id = #\$id"
 
   import Codecs.*
   import Sql.*

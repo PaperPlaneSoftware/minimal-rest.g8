@@ -8,17 +8,6 @@ import skunk.implicits.*
 import skunk.codec.all.*
 import tydal.*
 
-object TodoSchema
-    extends TableSchema[
-      "todo",
-      (
-          "task" :=: text,
-          "done" :=: bool,
-          "created_by" :=: int4,
-          "id" :=: nullable[int4]
-      )
-    ]
-
 object TodoRepo:
   case class TodoRow(task: String, done: Boolean, created_by: Int, id: Option[Int])
 
@@ -28,18 +17,11 @@ object TodoRepo:
   protected[persistence] object Sql:
     val table     = sql"todo"
     val cols      = sql"task, done, created_by"
-    val selectAll = sql"SELECT $cols, id FROM $table"
-    val selectOne = sql"SELECT $cols, id FROM $table WHERE id = $int4"
-    val insertOne = sql"INSERT INTO $table (${cols}) VALUES ($text, $bool, $int4) RETURNING id"
-    val deleteOne = sql"DELETE FROM $table WHERE id = $int4"
-    val updateOne = sql"UPDATE $table SET task = $text, done = $bool WHERE id = $int4"
-
-    val selectTydal =
-      Select
-        .from(TodoSchema `as` "t")
-        .take(_("t", "task"))
-        .where(x => (x("t", "done") === "done?") `and` (x("t", "id") === "id?"))
-        .compile
+    val selectAll = sql"SELECT \$cols, id FROM \$table"
+    val selectOne = sql"SELECT \$cols, id FROM \$table WHERE id = \$int4"
+    val insertOne = sql"INSERT INTO \$table (\${cols}) VALUES (\$text, \$bool, \$int4) RETURNING id"
+    val deleteOne = sql"DELETE FROM \$table WHERE id = \$int4"
+    val updateOne = sql"UPDATE \$table SET task = \$text, done = \$bool WHERE id = \$int4"
 
   import Codecs.*
   import TodoRepo.Sql.*
