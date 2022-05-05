@@ -95,7 +95,7 @@
     // {
     //   "_": "command",
     //   "shadow": true,
-    //   "command": "if [ \"$IN_TESTS\" != \"1\" ]; then ./scripts/dump-db; fi",
+    //   "command": "if [ \"\$IN_TESTS\" != \"1\" ]; then ./scripts/dump-db; fi",
     // },
   ],
 
@@ -107,7 +107,7 @@
     // {
     //   "_": "command",
     //   "shadow": true,
-    //   "command": "if [ \"$IN_TESTS\" = \"1\" ]; then ./scripts/test-seed; fi",
+    //   "command": "if [ \"\$IN_TESTS\" = \"1\" ]; then ./scripts/test-seed; fi",
     // },
   ],
 
