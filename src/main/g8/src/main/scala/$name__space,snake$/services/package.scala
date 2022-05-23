@@ -1,4 +1,4 @@
-package $name$
+package $name;format="space,snake"$
 package services
 
 import cats.implicits.*

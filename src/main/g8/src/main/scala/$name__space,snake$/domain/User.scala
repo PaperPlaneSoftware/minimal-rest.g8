@@ -1,4 +1,4 @@
-package $name$
+package $name;format="space,snake"$
 package domain
 
 import java.util.UUID

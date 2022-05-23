@@ -18,7 +18,7 @@ resolvers += "jitpack" at "https://jitpack.io"
 lazy val root = project
   .in(file("."))
   .settings(
-    name         := "$name$",
+    name         := "$name;format="space,snake"$",
     version      := "0.1.0-SNAPSHOT",
     scalaVersion := scala3Version,
     scalacOptions ++= Seq(
@@ -28,9 +28,9 @@ lazy val root = project
       "-unchecked",
       "-source:future"
     ),
-    assembly / assemblyJarName := "$name$.jar",
+    assembly / assemblyJarName := "$name;format="space,snake"$.jar",
     assembly / test            := {},
-    mainClass                  := Some("$name$.Main")
+    mainClass                  := Some("$name;format="space,snake"$.Main")
   )
   .settings(
     libraryDependencies ++= Seq(

@@ -4,7 +4,7 @@ WORKDIR /app
 RUN sbt app/assembly
 
 FROM adoptopenjdk/openjdk11:jre
-COPY --from=scala-builder /target/scala-3.0.0/$name$.jar /app
+COPY --from=scala-builder /target/scala-3.0.0/$name;format="space,snake"$.jar /app
 WORKDIR /app
 EXPOSE 4000
-CMD ["java", "-jar", "$name$.jar"]
+CMD ["java", "-jar", "$name;format="space,snake"$.jar"]

@@ -17,7 +17,7 @@ Prerequisites: Git, SBT, Scala, Docker
 
 ## Check for dependency updates
 
-$name$ uses SemVer versioning to keep the project up-to-date with patch releases for it's dependencies. Minor and/or major releases are not automatically fetched so in order to check if there are any updates available the `sbt-updates` plugin has been installed. In order to check if any updates are available run the `dependencyUpdates` task in sbt.
+$name;format="space,snake"$ uses SemVer versioning to keep the project up-to-date with patch releases for it's dependencies. Minor and/or major releases are not automatically fetched so in order to check if there are any updates available the `sbt-updates` plugin has been installed. In order to check if any updates are available run the `dependencyUpdates` task in sbt.
 
 
 <br>
@@ -97,13 +97,13 @@ TODO: fill this in!
 
     `docker build -f Dockerfile.db -t <image>:<tag> .`
 
-    _suggested image: __$docker_repo$/$name$_db___
+    _suggested image: __$docker_repo$/$name;format="space,snake"$_db___
 
     _suggested tag: __latest___
 
-2. Start a new container from the $name$_db image.
+2. Start a new container from the $name;format="space,snake"$_db image.
 
-    `docker run -d --env-file .env -p 5432:5432 --name $name$_db <image>:<tag>`
+    `docker run -d --env-file .env -p 5432:5432 --name $name;format="space,snake"$_db <image>:<tag>`
 
 The database is now running inside docker and has created a database along with two users (the database owner and a worker) as defined in the `.env` file used in the command above.
 
@@ -142,7 +142,7 @@ The server and UI are now running in separate processes and will automatically r
 
     `docker build -f Dockerfile.web -t <image>:<tag> .`
 
-    _suggested image: __$docker_repo$/$name$_web___
+    _suggested image: __$docker_repo$/$name;format="space,snake"$_web___
 
     _suggested tag: __latest___
 
@@ -177,19 +177,19 @@ Once the workflow has successfully completed you just have to SSH onto the serve
 
 3. Build a new image using one (or both) of the command(s) below:
 
-    `docker build -f ./Dockerfile.web -t $docker_repo$/$name$_web:<tag> -t $docker_repo$/$name$_web:latest .`
+    `docker build -f ./Dockerfile.web -t $docker_repo$/$name;format="space,snake"$_web:<tag> -t $docker_repo$/$name;format="space,snake"$_web:latest .`
 
     or
 
-    `docker build -f ./Dockerfile.db -t $docker_repo$/$name$_db:<tag> -t $docker_repo$/$name$_db:latest .`
+    `docker build -f ./Dockerfile.db -t $docker_repo$/$name;format="space,snake"$_db:<tag> -t $docker_repo$/$name;format="space,snake"$_db:latest .`
 
 4. Push the image(s) to docker hub (you must be logged in to docker hub for this to work):
 
-    `docker push $docker_repo$/$name$_web:<tag>`
+    `docker push $docker_repo$/$name;format="space,snake"$_web:<tag>`
 
     or
 
-    `docker push $docker_repo$/$name$_db:<tag>`
+    `docker push $docker_repo$/$name;format="space,snake"$_db:<tag>`
 
 6. SSH into the server and run:
 

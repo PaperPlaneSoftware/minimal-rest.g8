@@ -1,4 +1,4 @@
-package $name$
+package $name;format="space,snake"$
 
 import cats.effect.{ExitCode, IO, IOApp}
 import natchez.Trace.Implicits.noop

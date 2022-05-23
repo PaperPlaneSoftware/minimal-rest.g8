@@ -1,4 +1,4 @@
-package $name$
+package $name;format="space,snake"$
 
 infix type Or[A, B] = Either[A, B]
 

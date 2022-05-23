@@ -1,4 +1,4 @@
-package $name$
+package $name;format="space,snake"$
 
 import cats.Monad
 import cats.data.{EitherT, Kleisli, OptionT}
