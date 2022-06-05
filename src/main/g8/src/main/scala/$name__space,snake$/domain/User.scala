@@ -1,8 +1,8 @@
 package $name;format="space,snake"$
 package domain
 
-import java.util.UUID
 import java.time.LocalDateTime
+import java.util.UUID
 
 case class User(username: String, id: Option[Int])
 

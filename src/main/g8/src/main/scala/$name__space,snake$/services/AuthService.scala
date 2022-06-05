@@ -1,25 +1,37 @@
 package $name;format="space,snake"$
 package services
 
-import cats.effect.{IO, Resource}
-import cats.implicits.*
-import java.util.UUID
 import java.time.LocalDateTime
 import java.time.LocalDateTime.now
-import persistence.{SessionRepo, UserRepo}
-import skunk.Session
+import java.util.UUID
 
-final case class SigninDeets(username: String, password: String)
+import cats.effect.{IO, Resource}
+import cats.implicits.*
+
+import doobie.implicits.*
+import doobie.util.transactor.Transactor
+
+import org.slf4j.LoggerFactory
+
+import domain.UserSession
+import persistence.{UserRepo, UserSessionRepo}
 
 object AuthService:
-  def login(uname: String, pwd: String)(using
-      Resource[IO, Session[IO]]
-  ): IO[AuthErr Or UUID] =
-    withinTransaction { implicit s => xa =>
+  import UserSessionRepo.UserSession
+
+  def login(uname: String, pwd: String)(using xa: Transactor[IO]): IO[AuthErr Or UUID] =
+    val query =
       for
         idOpt     <- UserRepo.login(uname, pwd)
-        sessionId <- idOpt.map(SessionRepo.newSession(_, now, now `plusDays` 1)).sequence
+        sessionId <- idOpt
+                       .map(userId =>
+                         UserSessionRepo.newSession(
+                           UserSession(userId, now, now `plusDays` 1, UUID.randomUUID)
+                         )
+                       )
+                       .sequence
       yield sessionId match
         case None            => AuthErr.IncorrectLoginDetails.asLeft
         case Some(sessionId) => sessionId.asRight
-    }
+
+    query.transact(xa)

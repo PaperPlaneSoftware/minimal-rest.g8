@@ -1,10 +1,8 @@
 #!/bin/bash
 set -e
 
-POSTGRES="psql -U $name;format="space,snake"$_owner -d $name$"
+POSTGRES="psql -U $POSTGRES_USER -d $POSTGRES_DB"
 
-echo "Creating database role: \$POSTGRES_WORKER"
-
-\$POSTGRES <<-EOSQL
-CREATE USER $name;format="space,snake"$_worker WITH LOGIN PASSWORD '\$POSTGRES_WORKER_PASSWORD';
+$POSTGRES <<-EOSQL
+CREATE USER $POSTGRES_WORKER WITH LOGIN PASSWORD '$POSTGRES_WORKER_PASSWORD' ;
 EOSQL
