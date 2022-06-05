@@ -54,14 +54,14 @@ GRANT SELECT, INSERT, DELETE, UPDATE ON TABLE user_session TO $name;format="spac
 /*** STORED PROCS (FOR DEV MOCK FIXTURES) ***/
 CREATE OR REPLACE FUNCTION get_user_id(e_mail TEXT) RETURNS INTEGER
 AS
-$$
+\$\$
 	SELECT id as user_id FROM app_user WHERE email = e_mail;
-$$
+\$\$
 LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION get_company_id(comp_name TEXT, p_code VARCHAR(8)) RETURNS INTEGER
 AS
-$$
+\$\$
 	SELECT id as company_id FROM company WHERE company_name = comp_name and postcode = p_code;
-$$
+\$\$
 LANGUAGE SQL;
