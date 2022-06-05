@@ -89,7 +89,7 @@ object Server:
       .flatMap(ec =>
         HikariTransactor.newHikariTransactor[IO](
           "org.postgresql.Driver",                            // driver classname
-          s"jdbc:postgresql://${dbHost}:${dbPort}/${dbName}", // connect URL
+          s"jdbc:postgresql://\$dbHost:\$dbPort/\$dbName", // connect URL
           dbWorker,                                           // username
           dbWorkerPass,                                       // password
           ec                                                  // await connection here
