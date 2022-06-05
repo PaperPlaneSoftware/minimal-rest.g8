@@ -44,4 +44,4 @@ object UserSessionRepo:
     run(q)
 
   def as(userId: String): ConnectionIO[Unit] =
-    sql"select set_config('auth.id', $userId, false)".query[Unit].unique
+    sql"select set_config('auth.id', \$userId, false)".query[Unit].unique
